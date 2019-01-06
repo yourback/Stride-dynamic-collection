@@ -1,3 +1,5 @@
+步幅动态采集软件，使用pycharm 和 Qt desginer 完成
+
 注意：
     1、在主文件中有一个属性名为interface_name的变量，请确保设备接入的串口名称与其相符
 
