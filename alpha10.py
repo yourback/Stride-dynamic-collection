@@ -250,6 +250,7 @@ class MyMplCanvas(FigureCanvas):
                                                repeat=False)
         else:
             log('重复动画对象')
+
             self.ani.event_source.start()
 
         # plt.show()
