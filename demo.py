@@ -5,6 +5,7 @@ import time
 import serial
 
 from Interface import word_num, byte_num
+from printutil import log
 
 
 class ComThread:
@@ -67,32 +68,32 @@ class ComThread:
             n = self.l_serial.inWaiting()
             if n:
                 data = data + self.l_serial.read(n)
-                print('get data from serial port:', data)
-                print(type(data))
+                log('get data from serial port:', data)
+                log(type(data))
 
             n = self.l_serial.inWaiting()
             if len(data) > 0 and n == 0:
                 try:
                     temp = data.decode('gb18030')
-                    print(type(temp))
-                    print(temp)
+                    log(type(temp))
+                    log(temp)
                     car, temp = str(temp).split("\n", 1)
-                    print(car, temp)
+                    log(car, temp)
 
                     string = str(temp).strip().split(":")[1]
                     str_ID, str_data = str(string).split("*", 1)
 
-                    print(str_ID)
-                    print(str_data)
-                    print(type(str_ID), type(str_data))
+                    log(str_ID)
+                    log(str_data)
+                    log(type(str_ID), type(str_data))
 
                     if str_data[-1] == '*':
                         break
                     else:
-                        print(str_data[-1])
-                        print('str_data[-1]!=*')
+                        log(str_data[-1])
+                        log('str_data[-1]!=*')
                 except:
-                    print("∂¡ø®¥ÌŒÛ£¨«Î÷ÿ ‘£°\n")
+                    log("∂¡ø®¥ÌŒÛ£¨«Î÷ÿ ‘£°\n")
 
         self.ID = str_ID
         self.data = str_data[0:-1]
@@ -112,20 +113,20 @@ def main():
     rt.sendport = '**1*80*'
     try:
         if rt.start():
-            print(rt.l_serial.name)
+            log(rt.l_serial.name)
             rt.waiting()
-            print("The data is:%s,The Id is:%s" % (rt.data, rt.ID))
+            log("The data is:%s,The Id is:%s" % (rt.data, rt.ID))
             rt.stop()
         else:
             pass
     except Exception as se:
-        print(str(se))
+        log(str(se))
 
     if rt.alive:
         rt.stop()
 
-    print('')
-    print('End OK .')
+    log('')
+    log('End OK .')
     temp_ID = rt.ID
     temp_data = rt.data
     del rt
@@ -141,17 +142,17 @@ if __name__ == '__main__':
     str = ' FF E5 FF E5 FF C9 00 3C 00 00 00 00 00 00 00 00 00 00 00 58 FF 85 FF A8 00 B2 00 00 00 00 00 00 00 00 00 0D 0A[2018-09-17 05:33:20.648]'.replace(
         ' ', '')
     str = str[:str.rindex('[')]
-    print(str)
+    log(str)
     LD = word_num(str[0:4], str[18:22])
-    print(LD)
+    log(LD)
     LU = word_num(str[4:8], str[22:26])
-    print(LU)
+    log(LU)
     RD = word_num(str[8:12], str[26:30])
-    print(RD)
+    log(RD)
     RU = word_num(str[12:16], str[30:34])
-    print(RU)
+    log(RU)
     E = byte_num(str[16:18], str[34:36])
-    print(E)
+    log(E)
     J = byte_num(str[-6:-4], '00')
-    print(J)
+    log(J)
     # print('LD:%s,LU:%s,RD:%s,RU:%s,E:%s,J:%s' % (LD, LU, RD, RU, E, J))

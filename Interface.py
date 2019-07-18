@@ -1,10 +1,12 @@
 import binascii
 
-import serial
-
 import os
 
 import time
+
+import serial
+
+from printutil import log
 
 interface_name = ''
 
@@ -23,13 +25,13 @@ def interface_swicth(b, name):
                 ser.close()
         return True
     except Exception as e:
-        print('错误')
-        print(e)
+        log('错误')
+        log(e)
         return False
 
 
 def get_data_from_interface():
-    print('启动数据')
+    log('启动数据')
     ser = serial.Serial(interface_name, 115200, timeout=0.5)  # winsows系统使用com8口连接串行口
     if not ser.is_open:
         ser.open()  # 打开端口
@@ -41,16 +43,17 @@ def get_data_from_interface():
 
     filename = 'datasource_' + time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())
     f = None
-    print('打开文件')
+    log('打开文件')
     while True:
         line_str = ser.readline()
-        if len(line_str) != 37:
-            print('数据长度不够')
+        str = binascii.b2a_hex(line_str).decode('utf8')
+        if len(str) != 74:
+            log('数据长度不够%s' % str)
             if f is not None:
                 f.close()
             continue
-        str = binascii.b2a_hex(line_str).decode('utf8')
-        print(str)
+        # str = binascii.b2a_hex(line_str).decode('utf8')
+        log(str)
         if f is None or f.closed:
             f = open('./数据/%s.txt' % filename, 'a')
         f.write(str + '\n')
@@ -113,4 +116,4 @@ if __name__ == '__main__':
     i = 0
     while i < 100:
         i += 1
-        print(t.__next__())
+        log(t.__next__())

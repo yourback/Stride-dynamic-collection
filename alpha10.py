@@ -11,18 +11,23 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 import matplotlib.pyplot as plt
 
+# 设备接入的接口名称
+interface_com = 'com5'
+
+# 显示哪几个图
+# 1 对应左腿
+# 2 对应右腿
+# 3 对应角度
+# 4 对应角速度
+figures = "1"
+
+# 图像上下边界
+y_axis_wid = 150
+# X轴的宽度
+x_axis_wid = 10
+
 
 class Demo(QMainWindow, Ui_MainWindow):
-    # 设备接入的接口名称
-    interface_name = 'com8'
-
-    # 显示哪几个图
-    # 1 对应左腿
-    # 2 对应右腿
-    # 3 对应角度
-    # 4 对应角速度
-    figuresShow = "1543"
-
     # 开始绘图的标志位
     isDrawing = False
 
@@ -45,6 +50,9 @@ class Demo(QMainWindow, Ui_MainWindow):
         super(Demo, self).__init__(parent)
         self.setupUi(self)
 
+        # 设备接入的接口名称
+        self.interface_name = interface_com
+        self.figuresShow = figures
         self.initUI()
         # 新建布局
         self.layout = QVBoxLayout()
@@ -111,8 +119,8 @@ class MyMplCanvas(FigureCanvas):
     # 起始x,y的大小
     limit_x_up = 10
     limit_x_down = 0
-    limit_y_up = 100
-    limit_y_down = -100
+    limit_y_up = y_axis_wid
+    limit_y_down = -y_axis_wid
 
     # 没有设备接入的信号
     no_Device_signal = pyqtSignal()
@@ -237,11 +245,11 @@ class MyMplCanvas(FigureCanvas):
     # 开始绘制
     def start_draw(self):
         if not self.ani:
-            print("新建动画")
+            log("新建动画")
             self.ani = animation.FuncAnimation(self.fig, self.run, self.data_source, blit=True, interval=0.02,
                                                repeat=False)
         else:
-            print('重复动画对象')
+            log('重复动画对象')
             self.ani.event_source.start()
 
         # plt.show()
@@ -469,19 +477,24 @@ class MyMplCanvas(FigureCanvas):
 
         if t >= xmax:
             if '1' in self.figuresShow:
-                self.axes1.set_xlim(xmin, 2 * xmax)
+                # self.axes1.set_xlim(xmin, 2 * xmax)
+                self.axes1.set_xlim(xmax, xmax + x_axis_wid)
                 self.axes1.figure.canvas.draw()
             if '2' in self.figuresShow:
-                self.axes2.set_xlim(xmin, 2 * xmax)
+                # self.axes2.set_xlim(xmin, 2 * xmax)
+                self.axes2.set_xlim(xmax, xmax + x_axis_wid)
                 self.axes2.figure.canvas.draw()
             if '3' in self.figuresShow:
-                self.axes3.set_xlim(xmin, 2 * xmax)
+                # self.axes3.set_xlim(xmin, 2 * xmax)
+                self.axes3.set_xlim(xmax, xmax + x_axis_wid)
                 self.axes3.figure.canvas.draw()
             if '4' in self.figuresShow:
-                self.axes4.set_xlim(xmin, 2 * xmax)
+                # self.axes4.set_xlim(xmin, 2 * xmax)
+                self.axes4.set_xlim(xmax, xmax + x_axis_wid)
                 self.axes4.figure.canvas.draw()
             if '5' in self.figuresShow:
-                self.axes5.set_xlim(xmin, 2 * xmax)
+                # self.axes5.set_xlim(xmin, 2 * xmax)
+                self.axes5.set_xlim(xmax, xmax + x_axis_wid)
 
         QApplication.processEvents()
 
