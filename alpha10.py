@@ -180,10 +180,13 @@ class MyMplCanvas(FigureCanvas):
         self.RD_RUdata, self.LU_LDdata = [], []
         self.RD_RU_olddata, self.LU_LD_olddata = [], []
         self.fig5_LUdata, self.fig5_RUdata = [], []
+        self.fig6_LDdata, self.fig6_RDdata = [], []
         # 线条初始化
         self.LDline, self.LUline, self.Eline1, self.Jline1, self.RDline, self.RUline, self.Eline2, self.Jline2, self.LU_LDline, self.RD_RUline, self.Eline3, self.Jline3, self.LU_LD_oldline, self.RD_RU_oldline, self.Eline4, self.Jline4 = None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None
         # 5图的线条初始化
         self.fig5_LUline, self.fig5_RUline, self.Eline5, self.Jline5 = None, None, None, None
+        # 6图的线条初始化
+        self.fig6_LDline, self.fig6_RDline, self.Eline6, self.Jline6 = None, None, None, None
 
         # 数据源初始化
         self.data_source = get_data_from_interface()
@@ -249,9 +252,9 @@ class MyMplCanvas(FigureCanvas):
             self.axes5.legend()
 
         if '6' in self.figuresShow:
-            # 图五初始化
-            self.fig6_LUline, = self.axes6.plot(self.Xdata, self.LDdata, lw=1, label='左腿小腿')
-            self.fig6_RUline, = self.axes6.plot(self.Xdata, self.RDdata, lw=1, label='右腿小腿')
+            # 图6初始化
+            self.fig6_LDline, = self.axes6.plot(self.Xdata, self.LDdata, lw=1, label='左腿小腿')
+            self.fig6_RDline, = self.axes6.plot(self.Xdata, self.RDdata, lw=1, label='右腿小腿')
             self.Eline6, = self.axes6.plot(self.Xdata, self.Edata, lw=1, label='工况')
             self.Jline6, = self.axes6.plot(self.Xdata, self.Jdata, lw=1, label='状态')
 
@@ -314,6 +317,10 @@ class MyMplCanvas(FigureCanvas):
             # 图五
             self.fig5_LUdata.append(LU)
             self.fig5_RUdata.append(RU)
+        if '6' in self.figuresShow:
+            # 图6
+            self.fig6_LDdata.append(LD)
+            self.fig6_RDdata.append(RD)
 
         # 标志位
         self.Edata.append(E)
@@ -331,6 +338,7 @@ class MyMplCanvas(FigureCanvas):
         fig3Tuple = (self.LU_LDline, self.RD_RUline, self.Eline3, self.Jline3)
         fig4Tuple = (self.LU_LD_oldline, self.RD_RU_oldline, self.Eline4, self.Jline4)
         fig5Tuple = (self.fig5_LUline, self.fig5_RUline, self.Eline5, self.Jline5)
+        fig6Tuple = (self.fig6_LDline, self.fig6_RDline, self.Eline6, self.Jline6)
 
         if self.LDline:
             resultTuple += fig1Tuple
@@ -342,6 +350,8 @@ class MyMplCanvas(FigureCanvas):
             resultTuple += fig4Tuple
         if self.fig5_LUline:
             resultTuple += fig5Tuple
+        if self.fig6_LDline:
+            resultTuple += fig6Tuple
 
         return resultTuple
 
@@ -450,6 +460,12 @@ class MyMplCanvas(FigureCanvas):
             self.Eline5.set_data(self.Xdata, self.Edata)
             self.Jline5.set_data(self.Xdata, self.Jdata)
 
+        if '6' in self.figuresShow:
+            self.fig6_LDline.set_data(self.Xdata, self.fig6_LDdata)
+            self.fig6_RDline.set_data(self.Xdata, self.fig6_RDdata)
+            self.Eline6.set_data(self.Xdata, self.Edata)
+            self.Jline6.set_data(self.Xdata, self.Jdata)
+
     # 清除已绘图像
     def clearFigures(self, i):
         pass
@@ -496,6 +512,8 @@ class MyMplCanvas(FigureCanvas):
             xmin, xmax = self.axes4.get_xlim()
         elif '5' in self.figuresShow:
             xmin, xmax = self.axes5.get_xlim()
+        elif '6' in self.figuresShow:
+            xmin, xmax = self.axes6.get_xlim()
 
         if t >= xmax:
             if '1' in self.figuresShow:
@@ -517,6 +535,9 @@ class MyMplCanvas(FigureCanvas):
             if '5' in self.figuresShow:
                 # self.axes5.set_xlim(xmin, 2 * xmax)
                 self.axes5.set_xlim(xmax, xmax + x_axis_wid)
+            if '6' in self.figuresShow:
+                # self.axes6.set_xlim(xmin, 2 * xmax)
+                self.axes6.set_xlim(xmax, xmax + x_axis_wid)
 
         QApplication.processEvents()
 

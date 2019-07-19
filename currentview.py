@@ -41,6 +41,9 @@ class HistoryInfo(FigureCanvas):
             # build axes5
             self.axes5 = self.fig.add_subplot(parent.figure5_layout)
 
+        if '6' in self.figuresShow:
+            self.axes6 = self.fig.add_subplot(parent.figure6_layout)
+
         FigureCanvas.__init__(self, self.fig)
 
         self.setParent(None)
@@ -105,6 +108,15 @@ class HistoryInfo(FigureCanvas):
             self.Jline5, = self.axes5.plot(t, flist, '-', label='状态')
             self.axes5.grid(True)
             self.axes5.legend()
+
+        if '6' in self.figuresShow:
+            # 图6
+            self.fig6_LDline, = self.axes6.plot(t, alist, '-', label='左腿小腿')
+            self.fig6_RDline, = self.axes6.plot(t, clist, '-', label='右腿小腿')
+            self.Eline6, = self.axes6.plot(t, self.Edata, '-', label='工况')
+            self.Jline6, = self.axes6.plot(t, self.Jdata, '-', label='状态')
+            self.axes6.grid(True)
+            self.axes6.legend()
 
 
 class MatplotlibWidget(QWidget):
