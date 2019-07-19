@@ -20,7 +20,8 @@ interface_com = 'com5'
 # 3 对应角度
 # 4 对应角速度
 # 5 对应大腿
-figures = "31"
+# 6 对应小腿
+figures = "6"
 
 # 图像上下边界
 y_axis_wid = 150
@@ -163,6 +164,10 @@ class MyMplCanvas(FigureCanvas):
             # build axes5
             self.axes5 = self.fig.add_subplot(self.figure5_layout)
 
+        if "6" in self.figuresShow:
+            # build axes6
+            self.axes6 = self.fig.add_subplot(self.figure6_layout)
+
         FigureCanvas.__init__(self, self.fig)
 
         self.setParent(None)
@@ -242,6 +247,18 @@ class MyMplCanvas(FigureCanvas):
             self.axes5.set_xlim(self.limit_x_down, self.limit_x_up)
             self.axes5.grid(True)
             self.axes5.legend()
+
+        if '6' in self.figuresShow:
+            # 图五初始化
+            self.fig6_LUline, = self.axes6.plot(self.Xdata, self.LDdata, lw=1, label='左腿小腿')
+            self.fig6_RUline, = self.axes6.plot(self.Xdata, self.RDdata, lw=1, label='右腿小腿')
+            self.Eline6, = self.axes6.plot(self.Xdata, self.Edata, lw=1, label='工况')
+            self.Jline6, = self.axes6.plot(self.Xdata, self.Jdata, lw=1, label='状态')
+
+            self.axes6.set_ylim(self.limit_y_down, self.limit_y_up)
+            self.axes6.set_xlim(self.limit_x_down, self.limit_x_up)
+            self.axes6.grid(True)
+            self.axes6.legend()
 
     # 开始绘制
     def start_draw(self):
@@ -458,6 +475,9 @@ class MyMplCanvas(FigureCanvas):
             elif f == '5':
                 # 515
                 self.figure5_layout = str(figure_count) + '1' + str(i + 1)
+            elif f == '6':
+                # 616
+                self.figure6_layout = str(figure_count) + '1' + str(i + 1)
 
     # 更新绘图坐标系的横轴
     def update_xmax(self, t):
