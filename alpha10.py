@@ -19,7 +19,8 @@ interface_com = 'com5'
 # 2 对应右腿
 # 3 对应角度
 # 4 对应角速度
-figures = "1"
+# 5 对应大腿
+figures = "31"
 
 # 图像上下边界
 y_axis_wid = 150
