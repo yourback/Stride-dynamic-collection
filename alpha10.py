@@ -498,7 +498,7 @@ class MyMplCanvas(FigureCanvas):
     # 更新绘图坐标系的横轴
     def update_xmax(self, t):
         """更新绘图坐标系的横轴"""
-        xmin = 0
+        # xmin = 0
 
         xmax = 100
 
